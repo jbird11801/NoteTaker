@@ -115,6 +115,66 @@ app.post('/api/notes', (req, res) => {
 
 
 
+app.delete('/api/notes/:id', (req, res) => {
+
+  var parsedNotes;
+
+  const { id } = req.params;
+
+  fs.readFile('./db/db.json', 'utf8', (err, data) => {
+
+    if (err) {
+
+      console.error(err);
+
+    } else {
+
+      // Convert string into JSON object
+
+      parsedNotes = JSON.parse(data);
+
+      //console.log(typeof(parsedNotes) + " " + parsedNotes);
+
+      const index = parsedNotes.findIndex(data => data.id == id);
+
+      parsedNotes.splice(index, 1);
+
+        fs.writeFile('./db/db.json', JSON.stringify(parsedNotes, null, 4),(writeErr) =>
+
+          writeErr
+
+            ? console.error(writeErr)
+
+            : console.info('Successfully deleted a note!')
+
+        );
+
+    }
+
+  });
+
+  fs.readFile('./db/db.json', 'utf8', (err, data) => {
+
+    if (err) {
+  
+      console.error(err);
+  
+    } else {
+  
+      // Convert string into JSON object
+  
+      const parsedNotes = JSON.parse(data);
+  
+      res.json(parsedNotes);
+  
+    }
+  
+  })
+
+});
+
+
+
 app.get('*', (req, res) =>
 
 res.sendFile(path.join(__dirname, '/public/index.html'))
