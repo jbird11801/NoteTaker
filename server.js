@@ -1,3 +1,5 @@
+//global variables / required files
+
 const express = require('express');
 
 const path = require('path');
@@ -6,13 +8,11 @@ const fs = require('fs');
 
 const uuid = require('uuid');
 
-
-
 const PORT = process.env.PORT || 3001;
 
 const app = express();
 
-
+// middlewear
 
 app.use(express.json());
 
@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
-
+// url .../notes => ./public/notes.html
 
 app.get('/notes', (req, res) =>
 
@@ -28,7 +28,7 @@ res.sendFile(path.join(__dirname, '/public/notes.html'))
 
 );
 
-
+// gets all saved notes
 
 app.get('/api/notes', (req, res) =>
 
@@ -50,7 +50,7 @@ fs.readFile('./db/db.json', 'utf8', (err, data) => {
 
 }));
 
-
+//adds new notes 
 
 app.post('/api/notes', (req, res) => {
 
@@ -113,7 +113,7 @@ app.post('/api/notes', (req, res) => {
 
 });
 
-
+// delets old notes
 
 app.delete('/api/notes/:id', (req, res) => {
 
@@ -173,7 +173,7 @@ app.delete('/api/notes/:id', (req, res) => {
 
 });
 
-
+// any path goes to homepage
 
 app.get('*', (req, res) =>
 
@@ -181,7 +181,7 @@ res.sendFile(path.join(__dirname, '/public/index.html'))
 
 );
 
-
+// listens to port
 
 app.listen(PORT, () =>
 
