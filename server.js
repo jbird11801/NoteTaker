@@ -1,6 +1,12 @@
 const express = require('express');
+
 const path = require('path');
+
 const fs = require('fs');
+
+const uuid = require('uuid');
+
+
 
 const PORT = process.env.PORT || 3001;
 
@@ -48,7 +54,9 @@ fs.readFile('./db/db.json', 'utf8', (err, data) => {
 
 app.post('/api/notes', (req, res) => {
 
-  const newNote = req.body;
+  var newNote = req.body;
+
+  newNote.id = uuid.v4();
 
   // reads currently saved notes
 
@@ -104,6 +112,7 @@ app.post('/api/notes', (req, res) => {
   })
 
 });
+
 
 
 app.get('*', (req, res) =>
